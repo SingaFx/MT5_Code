@@ -58,7 +58,7 @@ int CPrimeGenerator::GetPrime(const int min)
          return(prime);
      }
 //--- outside of our predefined table
-   for(int i=(min|1); i<INT_MAX;i+=2)
+   for(int i=(min|1); i<=INT_MAX;i+=2)
      {
       if(IsPrime(i) && ((i-1)%s_hash_prime!=0))
          return(i);

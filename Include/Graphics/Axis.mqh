@@ -229,9 +229,8 @@ double CAxis::Mod(const double x,const double y)
 //--- check 
    if(y==0)
       return(0);
-//--- calculate modulus      
-   double temp=x/y;
-   return(y * ( temp - MathFloor( temp ) ));
+//--- calculate modulus
+   return (x>0)? MathMod(x,y): MathMod(x,y)+y;
   }
 //+------------------------------------------------------------------+
 //| Calculate a m_step size based on a data range, limited to a max  |
