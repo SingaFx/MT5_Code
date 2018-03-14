@@ -7,6 +7,7 @@
 #property link      "https://www.mql5.com"
 #property version   "1.00"
 #include <Arrays\ArrayObj.mqh>
+#include <Arrays\ArrayString.mqh>
 #include <Math\Alglib\alglib.mqh>
 #include <czj_tools\Cointegration.mqh>
 
@@ -27,7 +28,9 @@ void OnStart()
    //test_resize();
    //test_indicator();
    //func_test_main();
-   test_symbols_digits();
+   //test_symbols_digits();
+   //test_market_valid();
+   test_array_search();
 
   }
 //+------------------------------------------------------------------+
@@ -150,4 +153,25 @@ void test_symbols_digits()
        
        Print("Symbol:",symbol_choose," Point:", point," Digits:",digits, " Tick Size:",tick_size, " Size:",size);
       }
+   }
+void test_market_valid()
+   {
+    MqlTick mql_tick;
+    Print(SymbolInfoInteger(_Symbol,SYMBOL_TRADE_MODE));
+   }
+void test_array_search()
+   {
+    CArrayString *arr_str = new CArrayString;
+    if(arr_str==NULL)
+      {
+       Print("Failed");
+       return;
+      }
+    string currency_XUSD[]={"EUR","GBP","AUD","NZD"};
+    arr_str.AssignArray(currency_XUSD);
+    Print(arr_str.Total(),arr_str.At(1));
+    Print(arr_str.IsSorted());
+    int i =arr_str.Search("GBP");
+    int j =arr_str.Search("NZD");
+    Print(i," ",j);
    }
