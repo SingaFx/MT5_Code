@@ -1,43 +1,37 @@
 //+------------------------------------------------------------------+
-//|                                   EA_TranularArbOnChartEvent.mq5 |
-//|                        Copyright 2018, MetaQuotes Software Corp. |
+//|                                                  EA_ArbTest2.mq5 |
+//|                                                       chizhijing |
 //|                                             https://www.mql5.com |
 //+------------------------------------------------------------------+
-#property copyright "Copyright 2018, MetaQuotes Software Corp."
+#property copyright "chizhijing"
 #property link      "https://www.mql5.com"
 #property version   "1.00"
-input string Inp_symbol_x="EURUSD";
-input string Inp_symbol_y="GBPUSD";
-input string Inp_symbol_xy="EURGBP";
+#include <Strategy\StrategiesList.mqh>
+#include <strategy_czj\strategyTriangularArbitrage\CTriangularArbCurrency.mqh>
+CStrategyList Manager;
 input double Inp_lots=0.1;
 input int Inp_dev_points=50;
 input double Inp_win_per_lots=50;
 input int ea_magic=80320000;
-
-enum TypeCurrency
-  {
-   ENUM_TYPE_CURRENCY_XUSD_XUSD,
-   ENUM_TYPE_CURRENCY_XUSD_USDX,
-   ENUM_TYPE_CURRENCY_USDX_USDX
-  };
-
+string currencies[]={"EUR","GBP","AUD","NZD","CAD","CHF","JPY"};
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
 int OnInit()
   {
-//---
-   if(iCustom(Inp_symbol_x,PERIOD_M1,"iSpy",ChartID(),0)==INVALID_HANDLE) 
-      { Print("Error in setting of spy on ",Inp_symbol_x); return(true);}
-   if(iCustom(Inp_symbol_y,PERIOD_M1,"iSpy",ChartID(),1)==INVALID_HANDLE) 
-      { Print("Error in setting of spy on ",Inp_symbol_y); return(true);}
-   if(iCustom(Inp_symbol_xy,PERIOD_M1,"iSpy",ChartID(),2)==INVALID_HANDLE) 
-      { Print("Error in setting of spy on ", Inp_symbol_xy); return(true);}
-      
-   Print("Spys ok, waiting for data...");
-   //---
-   return(0);
-   
+//--- create timer
+   for(int i=0;i<ArraySize(currencies)-1;i++)
+     {
+      for(int j=i+1;j<ArraySize(currencies);j++)
+        {
+         CTriangularArbCurrency *arb = new CTriangularArbCurrency();
+         arb.ExpertMagic(ea_magic+10*i+j);
+         arb.Timeframe(PERIOD_M1);
+         arb.ExpertName("TriangularArbCurrency"+string(ea_magic+10*i+j));
+         arb.SetSymbolsInfor(currencies[i],currencies[j],Inp_lots,Inp_dev_points,Inp_win_per_lots);
+         Manager.AddStrategy(arb);
+        }
+     }
 //---
    return(INIT_SUCCEEDED);
   }
@@ -46,13 +40,22 @@ int OnInit()
 //+------------------------------------------------------------------+
 void OnDeinit(const int reason)
   {
-//---
-   
+//--- destroy timer
+   EventKillTimer();
+      
   }
 //+------------------------------------------------------------------+
 //| Expert tick function                                             |
 //+------------------------------------------------------------------+
 void OnTick()
+  {
+//---
+   //Manager.OnTick();
+  }
+//+------------------------------------------------------------------+
+//| Timer function                                                   |
+//+------------------------------------------------------------------+
+void OnTimer()
   {
 //---
    
@@ -66,10 +69,11 @@ void OnChartEvent(const int id,
                   const string &sparam)
   {
 //---
-   if(id>=CHARTEVENT_CUSTOM)      
+    if(id>=CHARTEVENT_CUSTOM)      
      {
-      Print(TimeToString(TimeCurrent(),TIME_SECONDS)," -> id=",id-CHARTEVENT_CUSTOM,":  ",sparam," ",EnumToString((ENUM_TIMEFRAMES)lparam)," price=",dparam);
+      Manager.OnChartEventTick(id,lparam,dparam,sparam);
+      //Print(TimeToString(TimeCurrent(),TIME_SECONDS)," -> id=",id-CHARTEVENT_CUSTOM,":  ",sparam," ",EnumToString((ENUM_TIMEFRAMES)lparam)," price=",dparam);
      }
+   
   }
-
 //+------------------------------------------------------------------+
