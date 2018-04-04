@@ -12,7 +12,8 @@ CStrategyList Manager;
 input double Inp_lots=0.1;
 input int Inp_dev_points=50;
 input double Inp_win_per_lots=50;
-input int ea_magic=1800;
+input int Inp_out_dev_points=100;
+input int ea_magic=2800;
 string currencies[]={"EUR","GBP","AUD","NZD","CAD","CHF","JPY"};
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
@@ -28,7 +29,7 @@ int OnInit()
          arb.ExpertMagic(ea_magic+10*i+j);
          arb.Timeframe(PERIOD_M1);
          arb.ExpertName("TriangularArbCurrency"+string(ea_magic+10*i+j));
-         arb.SetSymbolsInfor(currencies[i],currencies[j],Inp_lots,Inp_dev_points,Inp_win_per_lots);
+         arb.SetSymbolsInfor(currencies[i],currencies[j],Inp_lots,Inp_dev_points,Inp_win_per_lots,Inp_out_dev_points);
          Manager.AddStrategy(arb);
         }
      }

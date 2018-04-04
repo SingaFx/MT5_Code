@@ -9,10 +9,11 @@
 #include <Strategy\StrategiesList.mqh>
 #include <strategy_czj\strategyTriangularArbitrage\CTriangularArbCurrency.mqh>
 CStrategyList Manager;
-input double Inp_lots=0.1;
-input int Inp_dev_points=50;
-input double Inp_win_per_lots=50;
-input int ea_magic=1800;
+input double Inp_lots=0.01;
+input int Inp_dev_points=60;
+input double Inp_win_per_lots=80;
+input int Inp_out_dev_points=80;
+input int ea_magic=31804110;
 input string fix_symbol="EUR";
 input string free_symbols="GBP,AUD,NZD,CAD,CHF,JPY";
 
@@ -25,14 +26,13 @@ int OnInit()
    StringSplit(free_symbols,StringGetCharacter(",",0),results);
    for(int i=0;i<ArraySize(results);i++)
      {
-     
       CTriangularArbCurrency *arb = new CTriangularArbCurrency();
       arb.ExpertMagic(ea_magic+i);
       arb.Timeframe(PERIOD_M1);
       arb.ExpertName("TriangularArbCurrency"+string(ea_magic+i));
-      arb.SetSymbolsInfor(fix_symbol,results[i],Inp_lots,Inp_dev_points,Inp_win_per_lots);
+      arb.SetSymbolsInfor(fix_symbol,results[i],Inp_lots,Inp_dev_points,Inp_win_per_lots,Inp_out_dev_points);
+      arb.ReInitPositions();
       Manager.AddStrategy(arb);
-       
      }
 //---
    return(INIT_SUCCEEDED);
