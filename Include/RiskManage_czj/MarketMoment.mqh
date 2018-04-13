@@ -78,9 +78,9 @@ void CurrenciesMoment::GetCurrenciesMoments(string &xxx[], int &point[])
         {
          counter_up++;
          ArrayResize(currency_up,counter_up);
-         currency_up[couter-1]=currency[i];
+         currency_up[counter_up-1]=currency[i];
         }
-      else if((point[i]<0)
+      else if((point[i]<0))
         {
          counter_down++;
          ArrayResize(currency_down,counter_down);
