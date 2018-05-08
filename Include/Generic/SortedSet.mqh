@@ -641,23 +641,25 @@ bool CSortedSet::GetViewBetween(T &array[],T lower_value,T upper_value)
    IComparer<T>*comparer=m_tree.Comparer();
    if(comparer.Compare(lower_value,upper_value)>0)
       return(false);
-//--- copy all element from tree to array      
+//--- copy all element from tree to array
    T buff[];
    int size=m_tree.CopyTo(buff);
 //--- check range
    if(size==0 || comparer.Compare(buff[0],upper_value)>0 || comparer.Compare(buff[size-1],lower_value)<0)
       return(false);
-   int index=0;
 //--- find first element greater than lower_value
-   while(index<size && comparer.Compare(buff[index],lower_value)<0)
-      index++;
-   int start=index;
+   int index_lower=0;
+   while(index_lower<size && comparer.Compare(buff[index_lower],lower_value)<0)
+      index_lower++;
 //--- find first element less than upper_value
-   while(index<size && comparer.Compare(buff[index],upper_value)<=0)
-      index++;
-   int end=index;
+   int index_upper=size-1;
+   while(index_upper>0 && comparer.Compare(buff[index_upper],upper_value)>0)
+      index_upper--;
+//--- check indices
+   if(index_lower>index_upper)
+      return(false);
 //--- copy view between lower_value and upper_value to array
-   return(ArrayCopy(array,buff,0,start,end-start+1)>=0);
+   return(ArrayCopy(array,buff,0,index_lower,index_upper-index_lower+1)>=0);
   }
 //+------------------------------------------------------------------+
 //| Copy the CSortedSet<T> in reverse order to array.                |

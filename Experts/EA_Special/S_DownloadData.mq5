@@ -20,7 +20,7 @@ CBarDetector bar_detector=new CBarDetector(_Symbol,_Period);
 int OnInit()
   {
 //---
-   f_name=_Symbol+"_from_"+TimeToString(Inp_begin,TIME_DATE)+"_to_"+TimeToString(Inp_end,TIME_DATE)+"_"+PeriodFlag(_Period);
+   f_name=_Symbol+"_from_"+TimeToString(Inp_begin,TIME_DATE)+"_to_"+TimeToString(Inp_end,TIME_DATE)+"_"+EnumToString(_Period);
    StringReplace(f_name,".","");
    f_handle=FileOpen("Data\\"+f_name+".txt",FILE_WRITE|FILE_CSV);
    if(f_handle==INVALID_HANDLE)
