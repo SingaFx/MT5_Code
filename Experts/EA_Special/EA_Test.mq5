@@ -1,33 +1,19 @@
 //+------------------------------------------------------------------+
-//|                                             EA_BreakPointRSI.mq5 |
+//|                                                      EA_Test.mq5 |
 //|                        Copyright 2018, MetaQuotes Software Corp. |
 //|                                             https://www.mql5.com |
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2018, MetaQuotes Software Corp."
 #property link      "https://www.mql5.com"
 #property version   "1.00"
-#include <Strategy\StrategiesList.mqh>
-#include <strategy_czj\strategyMA\SimpleDoubleMA.mqh>
-input int Inp_ma_long=200;
-input int Inp_ma_short=24;
-input double Inp_lots=0.01;
-CStrategyList Manager;
-
+MqlTick tick;
+int counter=0;
 //+------------------------------------------------------------------+
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
 int OnInit()
   {
 //---
-   CSimpleDoubleMA *ma_s=new CSimpleDoubleMA();
-   ma_s.ExpertName("MA Simple");
-   ma_s.ExpertMagic(2018011601);
-   ma_s.Timeframe(_Period);
-   ma_s.ExpertSymbol(_Symbol);
-   ma_s.SetEventDetect(_Symbol,_Period);
-   ma_s.InitStrategy(Inp_ma_long,Inp_ma_short,Inp_lots);
-   ma_s.ReInitPositions();
-   Manager.AddStrategy(ma_s);
    
 //---
    return(INIT_SUCCEEDED);
@@ -46,6 +32,15 @@ void OnDeinit(const int reason)
 void OnTick()
   {
 //---
-   Manager.OnTick();
+   if(counter<5)
+     {
+     Print(counter);
+   SymbolInfoTick(_Symbol,tick);
+   Print("time:", tick.time," ",int(tick.time)," ",tick.bid," ", tick.ask, " ",tick.last, " ", tick.volume, " ", tick.time_msc, " ", tick.flags);
+   //SymbolInfoTick(_Symbol,tick);
+   //Print("time:",tick.time," ",tick.bid," ", tick.ask, " ",tick.last, " ", tick.volume, " ", tick.time_msc, " ", tick.flags);
+     counter++;
+     }
+
   }
 //+------------------------------------------------------------------+

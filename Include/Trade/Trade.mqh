@@ -101,6 +101,7 @@ public:
    bool              PositionModify(const ulong ticket,const double sl,const double tp);
    bool              PositionClose(const string symbol,const ulong deviation=ULONG_MAX);
    bool              PositionClose(const ulong ticket,const ulong deviation=ULONG_MAX);
+   bool              PositionClose(const ulong ticket,const string comment);
    bool              PositionCloseBy(const ulong ticket,const ulong ticket_by);
    bool              PositionClosePartial(const string symbol,const double volume,const ulong deviation=ULONG_MAX);
    bool              PositionClosePartial(const ulong ticket,const double volume,const ulong deviation=ULONG_MAX);
@@ -502,6 +503,44 @@ bool CTrade::PositionClose(const ulong ticket,const ulong deviation)
    m_request.volume   =PositionGetDouble(POSITION_VOLUME);
    m_request.magic    =m_magic;
    m_request.deviation=(deviation==ULONG_MAX) ? m_deviation : deviation;
+//--- close position
+   return(OrderSend(m_request,m_result));
+  }
+bool CTrade::PositionClose(const ulong ticket,const string comment)  // add by czj
+  {
+//--- check stopped
+   if(IsStopped(__FUNCTION__))
+      return(false);
+//--- check position existence
+   if(!PositionSelectByTicket(ticket))
+      return(false);
+   string symbol=PositionGetString(POSITION_SYMBOL);
+//--- clean
+   ClearStructures();
+//--- check filling
+   if(!FillingCheck(symbol))
+      return(false);
+//--- check
+   if((ENUM_POSITION_TYPE)PositionGetInteger(POSITION_TYPE)==POSITION_TYPE_BUY)
+     {
+      //--- prepare request for close BUY position
+      m_request.type =ORDER_TYPE_SELL;
+      m_request.price=SymbolInfoDouble(symbol,SYMBOL_BID);
+     }
+   else
+     {
+      //--- prepare request for close SELL position
+      m_request.type =ORDER_TYPE_BUY;
+      m_request.price=SymbolInfoDouble(symbol,SYMBOL_ASK);
+     }
+//--- setting request
+   m_request.action   =TRADE_ACTION_DEAL;
+   m_request.position =ticket;
+   m_request.symbol   =symbol;
+   m_request.volume   =PositionGetDouble(POSITION_VOLUME);
+   m_request.magic    =m_magic;
+   m_request.comment =comment;
+   m_request.deviation=ULONG_MAX;
 //--- close position
    return(OrderSend(m_request,m_result));
   }

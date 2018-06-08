@@ -8,6 +8,12 @@
 #property version   "1.00"
 #include <Strategy\StrategiesList.mqh>
 #include <strategy_czj\strategyRSI\SimpleRSI.mqh>
+input int Inp_RSI_period=12;
+input double Inp_RSI_up=70;
+input double Inp_RSI_down=30;
+input double Inp_lots=0.1;
+input bool Inp_single_position=true;
+input int Inp_EA_MAGIC=2018012201;
 
 CStrategyList Manager;
 
@@ -17,9 +23,9 @@ CStrategyList Manager;
 int OnInit()
   {
 //---
-   CSimpleRSIStrategy *rsi_s=new CSimpleRSIStrategy();
+   CSimpleRSIStrategy *rsi_s=new CSimpleRSIStrategy(Inp_RSI_period,Inp_RSI_up,Inp_RSI_down,Inp_lots,Inp_single_position);
    rsi_s.ExpertName("RSI BreakPoints");
-   rsi_s.ExpertMagic(2018012201);
+   rsi_s.ExpertMagic(Inp_EA_MAGIC);
    rsi_s.Timeframe(_Period);
    rsi_s.ExpertSymbol(_Symbol);
    rsi_s.SetEventDetect(_Symbol,_Period);

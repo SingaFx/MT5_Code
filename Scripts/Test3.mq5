@@ -13,7 +13,20 @@ void OnStart()
   {
 //---
    //test_bars();
-   test_symbol_infor();
+   //test_symbol_infor();
+   string symbols[21]=
+  {
+   "EURGBP","EURAUD","EURNZD","EURCAD","EURCHF","EURJPY",
+   "GBPAUD","GBPNZD","GBPCAD","GBPCHF","GBPJPY",
+   "AUDNZD","AUDCAD","AUDCHF","AUDJPY",
+   "NZDCAD","NZDCHF","NZDJPY",
+   "CADCHF","CADJPY",
+   "CHFJPY"
+  };
+   for(int i=0;i<21;i++)
+     {
+      Print(symbols[i], " ",SymbolInfoDouble(symbols[i],SYMBOL_TRADE_TICK_SIZE)," ",SymbolInfoDouble(symbols[i],SYMBOL_POINT));
+     }
   }
 //+------------------------------------------------------------------+
 void test_symbol_infor()
