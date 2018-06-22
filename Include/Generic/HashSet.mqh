@@ -270,7 +270,7 @@ bool CHashSet::Contains(T item)
    if(ArraySize(m_buckets)!=0)
      {
       //--- get hash code for item      
-      int hash_code=m_comparer.HashCode(item);
+      int hash_code=m_comparer.HashCode(item)&0x7FFFFFFF;
       //--- search item in the slots       
       for(int i=m_buckets[hash_code%ArraySize(m_buckets)]-1; i>=0; i=m_slots[i].next)
          if(m_slots[i].hash_code==hash_code && m_comparer.Equals(m_slots[i].value,item))
@@ -361,7 +361,7 @@ bool CHashSet::Remove(T item)
    if(ArraySize(m_buckets)!=0)
      {
       //--- get hash code for item      
-      int hash_code=m_comparer.HashCode(item);
+      int hash_code=m_comparer.HashCode(item)&0x7FFFFFFF;
       int bucket=hash_code%ArraySize(m_buckets);
       int last=-1;
       //--- search item     
@@ -815,11 +815,10 @@ void CHashSet::SetCapacity(const int new_size,bool new_hash_codes)
    if(new_hash_codes)
       for(int i=0; i<m_last_index; i++)
          if(m_slots[i].hash_code!=-1)
-            m_slots[i].hash_code=m_comparer.HashCode(m_slots[i].value);
+            m_slots[i].hash_code=m_comparer.HashCode(m_slots[i].value)&0x7FFFFFFF;
 //--- resize buckets
-   int old_size=ArraySize(m_buckets);
    ArrayResize(m_buckets,new_size);
-   ArrayFill(m_buckets,old_size,new_size-old_size,0);
+   ArrayFill(m_buckets,0,new_size,0);
 //--- restore buckets   
    for(int i=0; i<m_last_index; i++)
      {
@@ -839,7 +838,7 @@ bool CHashSet::AddIfNotPresent(T value)
    if(ArraySize(m_buckets)==0)
       Initialize(0);
 //--- get hash code and bucket for value
-   int hash_code=m_comparer.HashCode(value);
+   int hash_code=m_comparer.HashCode(value)&0x7FFFFFFF;
    int bucket=hash_code%ArraySize(m_buckets);
 //--- check value already in the set
    for(int i=m_buckets[hash_code%ArraySize(m_buckets)]-1; i>=0; i=m_slots[i].next)
@@ -865,8 +864,8 @@ bool CHashSet::AddIfNotPresent(T value)
      }
 //--- set value     
    m_slots[index].hash_code=hash_code;
-   m_slots[index].value= value;
-   m_slots[index].next = m_buckets[bucket]-1;
+   m_slots[index].value=value;
+   m_slots[index].next=m_buckets[bucket]-1;
    m_buckets[bucket]=index+1;
 //--- increase count
    m_count++;

@@ -13,19 +13,9 @@
 void OnStart()
   {
 //---
-   CTrade trade;
-   MqlTick tick;
-   SymbolInfoTick(_Symbol,tick);
-   trade.PositionOpen(_Symbol,ORDER_TYPE_BUY,0.01,0,0,0,"");
+   int arr[]={1,2,3,4,5,6,7,8,9};
+   Print("max index:",ArrayMaximum(arr)," max value:", arr[ArrayMaximum(arr)]);
    
-   Sleep(1);
-   Print(trade.ResultPrice());
-   if(!PositionSelectByTicket(trade.ResultOrder()))
-      {
-       Print("select failed");
-      }
-    
-   Print(PositionGetDouble(POSITION_PRICE_OPEN));
-   
+   Print("max index:",ArrayMaximum(arr,3,5)," max value:", arr[ArrayMaximum(arr,3,5)]);
   }
 //+------------------------------------------------------------------+
