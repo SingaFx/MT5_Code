@@ -66,7 +66,20 @@ int ArrayResizeAL(int &arr[],const int size)
 //+------------------------------------------------------------------+
 //| ArrayResizeAL for Alglib library with MQL4 and MQL5 features     |
 //+------------------------------------------------------------------+
-int ArrayResizeAL(ushort &arr[],const int size)
+int ArrayResizeAL(short &arr[],const int size)
+  {
+   int old=ArraySize(arr);
+   int res=ArrayResize(arr,size);
+//--- fill array if necessary
+   if(res>0 && old<size)
+      ArrayFill(arr,old,size-old,0);
+//--- return result
+   return(res);
+  }
+//+------------------------------------------------------------------+
+//| ArrayResizeAL for Alglib library with MQL4 and MQL5 features     |
+//+------------------------------------------------------------------+
+int ArrayResizeAL(char &arr[],const int size)
   {
    int old=ArraySize(arr);
    int res=ArrayResize(arr,size);
