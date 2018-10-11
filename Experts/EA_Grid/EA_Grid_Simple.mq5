@@ -9,10 +9,11 @@
 #include <Strategy\StrategiesList.mqh>
 #include <strategy_czj\strategyGrid\GridSimple.mqh>
 input int Inp_points_add=300;
-input int Inp_points_win=500;
+input int Inp_points_win=600;
 input double Inp_base_lots=0.01;
 input GridLotsCalType  Inp_lots_type=ENUM_GRID_LOTS_EXP;
-input GridWinType Inp_win_type=ENUM_GRID_WIN_COST;
+input GridWinType Inp_win_type=ENUM_GRID_WIN_LAST;
+input uint Inp_magic=20181010;
 
 
 CStrategyList Manager;
@@ -25,7 +26,7 @@ int OnInit()
 //---
    CGridSimple *strategy=new CGridSimple();
    strategy.ExpertName("CGridSimple");
-   strategy.ExpertMagic(2018090401);
+   strategy.ExpertMagic(Inp_magic);
    strategy.Timeframe(_Period);
    strategy.ExpertSymbol(_Symbol);
    strategy.Init(Inp_points_add,Inp_points_win,Inp_base_lots,Inp_lots_type,Inp_win_type);

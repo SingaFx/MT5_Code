@@ -9,12 +9,13 @@
 #include <Strategy\StrategiesList.mqh>
 #include <strategy_czj\strategyGrid\GridSimple.mqh>
 
-input string Inp_symbols="EURUSD,EURGBP";
-input string Inp_points_add="300,300";
-input string Inp_points_win="600,600";
+input string Inp_symbols="AUDCHF,AUDNZD,EURJPY,NZDCAD,NZDCHF";
+input string Inp_points_add="300,300,300,300,300";
+input string Inp_points_win="600,600,600,600,600";
 input double Inp_base_lots=0.01;
 input GridLotsCalType  Inp_lots_type=ENUM_GRID_LOTS_EXP;
 input GridWinType Inp_win_type=ENUM_GRID_WIN_LAST;
+input uint Inp_magic=20181010;
 
 
 CStrategyList Manager;
@@ -35,7 +36,7 @@ int OnInit()
      {
       CGridSimple *strategy=new CGridSimple();
       strategy.ExpertName("CGridSimple-"+string(i));
-      strategy.ExpertMagic(20181009+i);
+      strategy.ExpertMagic(Inp_magic+i);
       strategy.Timeframe(_Period);
       strategy.ExpertSymbol(str_symbols[i]);
       strategy.Init(StringToInteger(str_add_points[i]),StringToInteger(str_win_points[i]),Inp_base_lots,Inp_lots_type,Inp_win_type);
