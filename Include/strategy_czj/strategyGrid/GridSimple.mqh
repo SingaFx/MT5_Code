@@ -19,18 +19,19 @@ private:
 public:
                      CGridSimple(void){};
                     ~CGridSimple(void){};
-   void              Init(int add_points,int win_points,double l_base,GridLotsCalType l_type, GridWinType w_type);
+   void              Init(int add_points,int win_points,double l_base,GridLotsCalType l_type, GridWinType w_type, int max_pos);
+   void              SetTypeFilling(const ENUM_ORDER_TYPE_FILLING filling=ORDER_FILLING_FOK) {grid_operator.SetTypeFilling(filling);};
 protected:
    virtual void      OnEvent(const MarketEvent &event);
   };
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-void CGridSimple::Init(int add_points,int win_points,double l_base,GridLotsCalType l_type,GridWinType w_type)
+void CGridSimple::Init(int add_points,int win_points,double l_base,GridLotsCalType l_type,GridWinType w_type,int max_pos)
   {
    grid_operator.ExpertMagic(ExpertMagic());
    grid_operator.ExpertSymbol(ExpertSymbol());
-   grid_operator.Init(l_base,l_type);
+   grid_operator.Init(l_base,l_type,max_pos);
    points_add=add_points;
    points_win=win_points;
    win_out_type=w_type;
@@ -43,6 +44,7 @@ void CGridSimple::OnEvent(const MarketEvent &event)
    if(event.symbol==ExpertSymbol() && event.type==MARKET_EVENT_TICK)
      {
       grid_operator.RefreshPositionState();
+      grid_operator.RefreshTickPrice();
       switch(win_out_type)
         {
          case ENUM_GRID_WIN_COST :
