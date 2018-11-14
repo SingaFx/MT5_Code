@@ -20,4 +20,5 @@
 #include "sysinfoapi.mqh"
 #include "processenv.mqh"
 #include "libloaderapi.mqh"
+#include "memoryapi.mqh"
 //+------------------------------------------------------------------+

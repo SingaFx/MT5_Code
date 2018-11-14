@@ -252,8 +252,8 @@ struct CREATESTRUCTW
    int               y;
    int               x;
    long              style;
-   const string      lpszName;
-   const string      lpszClass;
+   PVOID             lpszName;
+   PVOID             lpszClass;
    uint              dwExStyle;
   };
 //---
@@ -560,8 +560,8 @@ struct LASTINPUTINFO
 //---
 struct MDICREATESTRUCTW
   {
-   const string      szClass;
-   const string      szTitle;
+   PVOID             szClass;
+   PVOID             szTitle;
    HANDLE            hOwner;
    int               x;
    int               y;
@@ -1125,7 +1125,7 @@ struct WINDOWPOS
    uint              flags;
   };
 //---
-struct WNDCLASSEXW
+struct WNDCLASSEXW pack(8)
   {
    uint              cbSize;
    uint              style;
@@ -1136,12 +1136,12 @@ struct WNDCLASSEXW
    HANDLE            hIcon;
    HANDLE            hCursor;
    HANDLE            hbrBackground;
-   const string      lpszMenuName;
-   const string      lpszClassName;
+   PVOID             lpszMenuName;
+   PVOID             lpszClassName;
    HANDLE            hIconSm;
   };
 //---
-struct WNDCLASSW
+struct WNDCLASSW pack(8)
   {
    uint              style;
    PVOID             lpfnWndProc;
@@ -1151,8 +1151,8 @@ struct WNDCLASSW
    HANDLE            hIcon;
    HANDLE            hCursor;
    HANDLE            hbrBackground;
-   const string      lpszMenuName;
-   const string      lpszClassName;
+   PVOID             lpszMenuName;
+   PVOID             lpszClassName;
   };
 //---
 struct WTSSESSION_NOTIFICATION
@@ -1271,7 +1271,7 @@ int                                 BringWindowToTop(HANDLE wnd);
 long                                BroadcastSystemMessage(uint flags,uint &info,uint Msg,PVOID param,PVOID param);
 long                                BroadcastSystemMessageExW(uint flags,uint &info,uint Msg,PVOID param,PVOID param,BSMINFO &info);
 long                                BroadcastSystemMessageW(uint flags,uint &info,uint Msg,PVOID param,PVOID param);
-int                                 CalculatePopupWindowPosition(const POINT &point[],const SIZE &size[],uint flags,RECT &rect,RECT &window_position);
+int                                 CalculatePopupWindowPosition(const POINT &point,const SIZE &size,uint flags,RECT &rect,RECT &window_position);
 int                                 CallMsgFilterW(MSG &msg,int code);
 PVOID                               CallNextHookEx(HANDLE hhk,int code,PVOID param,PVOID param);
 PVOID                               CallWindowProcW(PVOID prev_wnd_func,HANDLE wnd,uint Msg,PVOID param,PVOID param);
@@ -1284,13 +1284,15 @@ int                                 ChangeMenuW(HANDLE menu,uint cmd,const strin
 int                                 ChangeWindowMessageFilter(uint message,uint flag);
 int                                 ChangeWindowMessageFilterEx(HANDLE hwnd,uint message,uint action,CHANGEFILTERSTRUCT &change_filter_struct);
 uint                                CharLowerBuffW(string &lpsz,uint length);
-string                              CharLowerW(string &lpsz);
-ushort                              CharNextW(string lpsz);
-string                              CharPrevW(const string start,const string current);
+PVOID                               CharLowerW(string &lpsz);
+PVOID                               CharNextW(PVOID lpsz);
+PVOID                               CharNextW(string lpsz);
+PVOID                               CharPrevW(const PVOID start,const PVOID current);
+PVOID                               CharPrevW(const string start,const string current);
 int                                 CharToOemBuffW(const string src,char &dst[],uint dst_length);
 int                                 CharToOemW(const string src,char &dst[]);
 uint                                CharUpperBuffW(string &lpsz,uint length);
-string                              CharUpperW(string &lpsz);
+PVOID                               CharUpperW(string &lpsz);
 int                                 CheckDlgButton(HANDLE dlg,int nIDButton,uint check);
 uint                                CheckMenuItem(HANDLE menu,uint uIDCheckItem,uint check);
 int                                 CheckMenuRadioItem(HANDLE hmenu,uint first,uint last,uint check,uint flags);
@@ -1313,7 +1315,13 @@ int                                 CountClipboardFormats(void);
 HANDLE                              CreateAcceleratorTableW(ACCEL &paccel,int accel);
 int                                 CreateCaret(HANDLE wnd,HANDLE bitmap,int width,int height);
 HANDLE                              CreateCursor(HANDLE inst,int hot_spot,int hot_spot,int width,int height,PVOID pvANDPlane,PVOID pvXORPlane);
+HANDLE                              CreateDesktopExW(const string desktop,const PVOID device,PVOID devmode,uint flags,uint desired_access,PVOID lpsa,ulong heap_size,PVOID pvoid);
+HANDLE                              CreateDesktopExW(const string desktop,const string device,PVOID devmode,uint flags,uint desired_access,PVOID lpsa,ulong heap_size,PVOID pvoid);
+HANDLE                              CreateDesktopExW(const string desktop,const PVOID device,DEVMODEW &devmode,uint flags,uint desired_access,PVOID lpsa,ulong heap_size,PVOID pvoid);
 HANDLE                              CreateDesktopExW(const string desktop,const string device,DEVMODEW &devmode,uint flags,uint desired_access,PVOID lpsa,ulong heap_size,PVOID pvoid);
+HANDLE                              CreateDesktopW(const string desktop,const PVOID device,PVOID devmode,uint flags,uint desired_access,PVOID lpsa);
+HANDLE                              CreateDesktopW(const string desktop,const string device,PVOID devmode,uint flags,uint desired_access,PVOID lpsa);
+HANDLE                              CreateDesktopW(const string desktop,const PVOID device,DEVMODEW &devmode,uint flags,uint desired_access,PVOID lpsa);
 HANDLE                              CreateDesktopW(const string desktop,const string device,DEVMODEW &devmode,uint flags,uint desired_access,PVOID lpsa);
 HANDLE                              CreateDialogIndirectParamW(HANDLE instance,const DLGTEMPLATE &dlg_template,HANDLE wnd_parent,PVOID dialog_func,PVOID init_param);
 HANDLE                              CreateDialogParamW(HANDLE instance,const string template_name,HANDLE wnd_parent,PVOID dialog_func,PVOID init_param);
@@ -1324,6 +1332,7 @@ HANDLE                              CreateIconIndirect(ICONINFO &piconinfo);
 HANDLE                              CreateMDIWindowW(const string class_name,const string window_name,uint style,int X,int Y,int width,int height,HANDLE wnd_parent,HANDLE instance,PVOID param);
 HANDLE                              CreateMenu(void);
 HANDLE                              CreatePopupMenu(void);
+HANDLE                              CreateWindowExW(uint ex_style,const PVOID class_name,const PVOID window_name,uint style,int X,int Y,int width,int height,HANDLE wnd_parent,HANDLE menu,HANDLE instance,PVOID param);
 HANDLE                              CreateWindowExW(uint ex_style,const string class_name,const string window_name,uint style,int X,int Y,int width,int height,HANDLE wnd_parent,HANDLE menu,HANDLE instance,PVOID param);
 HANDLE                              CreateWindowStationW(const string lpwinsta,uint flags,uint desired_access,PVOID lpsa);
 PVOID                               DefDlgProcW(HANDLE dlg,uint Msg,PVOID param,PVOID param);
@@ -1798,6 +1807,7 @@ int                                 UnhookWindowsHookEx(HANDLE hhk);
 int                                 UnhookWinEvent(HANDLE win_event_hook);
 int                                 UnionRect(RECT &dst,RECT &src1,RECT &src2);
 int                                 UnloadKeyboardLayout(HANDLE hkl);
+int                                 UnregisterClassW(const PVOID class_name,HANDLE instance);
 int                                 UnregisterClassW(const string class_name,HANDLE instance);
 int                                 UnregisterDeviceNotification(PVOID Handle);
 int                                 UnregisterHotKey(HANDLE wnd,int id);

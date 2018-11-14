@@ -6,12 +6,8 @@
 #property copyright "Copyright 2018, MetaQuotes Software Corp."
 #property link      "https://www.mql5.com"
 //---
-//+------------------------------------------------------------------+
-//|                                                                  |
-//+------------------------------------------------------------------+
-//---
-#define HANDLE                long
-#define PVOID                 long
+#define HANDLE                         long
+#define PVOID                          long
 //---
 #define ANYSIZE_ARRAY                  1
 #define MAX_BREAKPOINTS                8
