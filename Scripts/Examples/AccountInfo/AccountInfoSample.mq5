@@ -82,7 +82,7 @@ bool CAccountInfoSample::Init(void)
 //--- redraw chart
    ChartRedraw();
 //---
-   return(0);
+   return(true);
   }
 //+------------------------------------------------------------------+
 //| Method Deinit.                                                   |
@@ -131,7 +131,7 @@ void CAccountInfoSample::AccountInfoToChart(void)
 void OnStart(void)
   {
 //--- call init function
-   if(ExtScript.Init()==0)
+   if(ExtScript.Init())
      {
       //--- cycle until the script is not halted
       while(!IsStopped())

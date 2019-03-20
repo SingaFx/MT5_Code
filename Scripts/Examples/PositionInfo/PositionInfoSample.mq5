@@ -101,7 +101,7 @@ bool CPositionInfoSample::Init(void)
 //--- redraw chart
    ChartRedraw();
 //---
-   return(0);
+   return(true);
   }
 //+------------------------------------------------------------------+
 //| Method Deinit.                                                   |
@@ -182,7 +182,7 @@ void CPositionInfoSample::InfoToChart(void)
 int OnStart(void)
   {
 //--- call init function
-   if(ExtScript.Init()==0)
+   if(ExtScript.Init())
      {
       //--- cycle until the script is not halted
       while(!IsStopped())

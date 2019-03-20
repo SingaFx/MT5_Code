@@ -70,9 +70,12 @@ bool CSymbolInfoSample::Init(void)
    color_info =(color)(ChartGetInteger(0,CHART_COLOR_BACKGROUND)^0xFFFFFF);
    color_label=(color)(color_info^0x202020);
 //---
-   if(ChartGetInteger(0,CHART_SHOW_OHLC)) sy+=16;
+   if(ChartGetInteger(0,CHART_SHOW_OHLC))
+      sy+=16;
 //---
    m_num_symbols=SymbolsTotal(InpMarketWatch);
+   if(!m_num_symbols)
+      return(false);
    ArrayResize(m_buttons,m_num_symbols);
 //--- creation Button[]
    for(i=0;i<m_num_symbols;i++)
@@ -103,7 +106,7 @@ bool CSymbolInfoSample::Init(void)
 //--- redraw chart
    ChartRedraw();
 //---
-   return(0);
+   return(true);
   }
 //+------------------------------------------------------------------+
 //| Method Deinit.                                                   |
@@ -200,7 +203,7 @@ void CSymbolInfoSample::InfoToChart(void)
 int OnStart(void)
   {
 //--- call init function
-   if(ExtScript.Init()==0)
+   if(ExtScript.Init())
      {
       //--- cycle until the script is not halted
       while(!IsStopped())
