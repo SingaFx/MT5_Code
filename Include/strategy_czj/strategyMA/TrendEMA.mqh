@@ -126,28 +126,29 @@ void CTrendEMA::OnEvent(const MarketEvent &event)
 //+------------------------------------------------------------------+
 void CTrendEMA::CheckLongPositionOpen(void)
   {
-   if(buffer_ema_close[9]>buffer_ema_high[9] && buffer_w_long[9]>-20)
+   if(buffer_ema_close[9]>buffer_ema_high[9])
+   //if(buffer_ema_close[9]>buffer_ema_high[9] && buffer_w_long[9]>-20)
      {
       bool b1=buffer_w_short[9]<-80;
       bool b2=latest_price.ask<buffer_ema_close[9];
       bool b3=Close[1]-Open[1]>2*MathAbs(Close[2]-Open[2]);
-      if(b1 && b2 && b3)
-        {
-         if(!long3[2].is_open)
-           {
-            Trade.PositionOpen(ExpertSymbol(),ORDER_TYPE_BUY,l_low,latest_price.ask,0,0,"L-Risk");
-            long3[2].Add(Trade.ResultOrder());
-           }
-        }
-      else if(b1 && b2)
-        {
-         if(!long3[1].is_open)
-           {
-            Trade.PositionOpen(ExpertSymbol(),ORDER_TYPE_BUY,l_medium,latest_price.ask,0,0,"M-Risk");
-            long3[1].Add(Trade.ResultOrder());
-           }
-        }
-      else if(b1)
+      //if(b1 && b2 && b3)
+      //  {
+      //   if(!long3[2].is_open)
+      //     {
+      //      Trade.PositionOpen(ExpertSymbol(),ORDER_TYPE_BUY,l_low,latest_price.ask,0,0,"L-Risk");
+      //      long3[2].Add(Trade.ResultOrder());
+      //     }
+      //  }
+      //else if(b1 && b2)
+      //  {
+      //   if(!long3[1].is_open)
+      //     {
+      //      Trade.PositionOpen(ExpertSymbol(),ORDER_TYPE_BUY,l_medium,latest_price.ask,0,0,"M-Risk");
+      //      long3[1].Add(Trade.ResultOrder());
+      //     }
+      //  }
+      if(b2)
         {
          if(!long3[0].is_open)
            {
@@ -162,28 +163,29 @@ void CTrendEMA::CheckLongPositionOpen(void)
 //+------------------------------------------------------------------+
 void CTrendEMA::CheckShortPositionOpen(void)
   {
-   if(buffer_ema_close[9]<buffer_ema_low[9] && buffer_w_long[9]<-80)
+   if(buffer_ema_close[9]<buffer_ema_low[9])
+   //if(buffer_ema_close[9]<buffer_ema_low[9] && buffer_w_long[9]<-80)
      {
       bool b1=buffer_w_short[9]>-20;
       bool b2=latest_price.bid>buffer_ema_close[9];
       bool b3=Open[1]-Close[1]>2*MathAbs(Close[2]-Open[2]);
-      if(b1 && b2 && b3)
-        {
-         if(!short3[2].is_open)
-           {
-            Trade.PositionOpen(ExpertSymbol(),ORDER_TYPE_SELL,l_low,latest_price.bid,0,0,"L-Risk");
-            short3[2].Add(Trade.ResultOrder());
-           }
-        }
-      else if(b1 && b2)
-        {
-         if(!short3[1].is_open)
-           {
-            Trade.PositionOpen(ExpertSymbol(),ORDER_TYPE_SELL,l_medium,latest_price.bid,0,0,"M-Risk");
-            short3[1].Add(Trade.ResultOrder());
-           }
-        }
-      else if(b1)
+      //if(b1 && b2 && b3)
+      //  {
+      //   if(!short3[2].is_open)
+      //     {
+      //      Trade.PositionOpen(ExpertSymbol(),ORDER_TYPE_SELL,l_low,latest_price.bid,0,0,"L-Risk");
+      //      short3[2].Add(Trade.ResultOrder());
+      //     }
+      //  }
+      //else if(b1 && b2)
+      //  {
+      //   if(!short3[1].is_open)
+      //     {
+      //      Trade.PositionOpen(ExpertSymbol(),ORDER_TYPE_SELL,l_medium,latest_price.bid,0,0,"M-Risk");
+      //      short3[1].Add(Trade.ResultOrder());
+      //     }
+      //  }
+      if(b2)
         {
          if(!short3[0].is_open)
            {
