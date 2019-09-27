@@ -16,7 +16,7 @@ private:
    double rsi_up_level;
 public:
                      CHedgeOperateByRSI(void);
-                    ~CHedgeOperateByRSI(void);
+                    ~CHedgeOperateByRSI(void){};
    virtual void      RefreshIndValues();
    virtual bool      IsUpSignal();
    virtual bool      IsDownSignal();
@@ -26,9 +26,10 @@ public:
 //+------------------------------------------------------------------+
 CHedgeOperateByRSI::CHedgeOperateByRSI(void)
   {
-   ind_handle=iRSI(ExpertSymbol(),PERIOD_H1,12,PRICE_CLOSE);
+   ind_handle=iRSI(ExpertSymbol(),PERIOD_M5,12,PRICE_CLOSE);
    rsi_down_level=30;
    rsi_up_level=70;
+   RefreshIndValues();
   }
 void CHedgeOperateByRSI::RefreshIndValues(void)
    {

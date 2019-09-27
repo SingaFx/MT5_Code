@@ -126,10 +126,9 @@ void CTrendEMA::OnEvent(const MarketEvent &event)
 //+------------------------------------------------------------------+
 void CTrendEMA::CheckLongPositionOpen(void)
   {
-   if(buffer_ema_close[9]>buffer_ema_high[9])
-   //if(buffer_ema_close[9]>buffer_ema_high[9] && buffer_w_long[9]>-20)
+   if(buffer_ema_close[9]>buffer_ema_high[9] && buffer_w_long[9]>-20)
      {
-      bool b1=buffer_w_short[9]<-80;
+      bool b1=buffer_w_short[9]<-30;
       bool b2=latest_price.ask<buffer_ema_close[9];
       bool b3=Close[1]-Open[1]>2*MathAbs(Close[2]-Open[2]);
       //if(b1 && b2 && b3)
@@ -148,7 +147,7 @@ void CTrendEMA::CheckLongPositionOpen(void)
       //      long3[1].Add(Trade.ResultOrder());
       //     }
       //  }
-      if(b2)
+      if(b2&&b1)
         {
          if(!long3[0].is_open)
            {
@@ -163,10 +162,9 @@ void CTrendEMA::CheckLongPositionOpen(void)
 //+------------------------------------------------------------------+
 void CTrendEMA::CheckShortPositionOpen(void)
   {
-   if(buffer_ema_close[9]<buffer_ema_low[9])
-   //if(buffer_ema_close[9]<buffer_ema_low[9] && buffer_w_long[9]<-80)
+   if(buffer_ema_close[9]<buffer_ema_low[9] && buffer_w_long[9]<-80)
      {
-      bool b1=buffer_w_short[9]>-20;
+      bool b1=buffer_w_short[9]>-70;
       bool b2=latest_price.bid>buffer_ema_close[9];
       bool b3=Open[1]-Close[1]>2*MathAbs(Close[2]-Open[2]);
       //if(b1 && b2 && b3)
@@ -185,7 +183,7 @@ void CTrendEMA::CheckShortPositionOpen(void)
       //      short3[1].Add(Trade.ResultOrder());
       //     }
       //  }
-      if(b2)
+      if(b2&&b1)
         {
          if(!short3[0].is_open)
            {
